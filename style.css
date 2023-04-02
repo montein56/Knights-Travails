@@ -1,0 +1,82 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+    background-image: linear-gradient(#09152b, #035cc2, rgb(51, 122, 136));
+    padding: 0;
+    margin: 0 ;
+  }
+  header {
+    height: 10vh;
+  }
+  h1 {
+    display: flex;
+    color: rgb(245, 238, 245);
+    font-size: 2.5em;
+  }
+
+  #buttonsRow{
+    display: flex;
+    justify-content:flex-start;
+  }
+  #display{
+    background-color: rgb(81, 122, 130);
+    width: 68%;
+display: flex;
+justify-content: center;
+align-items: center;
+margin:1vh 0;
+ }
+  .btn {
+    height: 3vw;
+    width: 29%;
+    font-size: 1.2em;
+    background-color: rgb(64, 139, 224);
+    color: white;
+    margin:1vh 0;
+    text-align: center;
+    cursor: pointer;
+    transition-duration: 0.6s;
+  }
+  
+  .btn:hover {
+    background-color: #bc94e3;
+    color: rgb(219, 201, 219);
+    box-shadow: 0 8px 16px 0 #f7f9f533,
+      0 6px 20px 0 #e6ebe330;
+  }
+  .disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  section {
+    height: 80vh;
+  }
+  #container {
+    display: flex;
+    border: solid red 2px;
+    width: 70vh;
+    height: 70vh;
+    background-color: black;
+  }
+  td{
+    width: 3vw;
+    height: 3vw;
+    text-align: center;
+  }
+
+.squaresCursor{
+  cursor: pointer;
+}
+  footer {
+    display: flex;
+    margin-top: auto;
+  }
+  img {
+    width: 25px;
+    height: auto;
+    padding: 0 3px;
+  }
+  
