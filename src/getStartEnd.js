@@ -4,58 +4,59 @@
 import makeChessBoard from './makeBoard.js';
 import getLSDataForBFS from './bfs.js';
 
-// SQUARE CLICKED, GET END NUMBER
-function getEndNumber(e) {
-// move end number to LS
-  const endNumber = e.target.id;
-  const listFromLS = JSON.parse(window.localStorage.getItem('knightStart'));
-  listFromLS.push(endNumber);
-  localStorage.setItem('knightStart', JSON.stringify(listFromLS));
-  // color the square selected
-  const squarePicked = document.getElementById(endNumber);
-  squarePicked.style.backgroundColor = ('tomato');
-  squarePicked.innerText = (endNumber);
-  // remove squares listeners
+const addSquaresListeners=(callBack)=>{
   const square = document.getElementsByClassName('cell');
   for (let i = 0; i < square.length; i++) {
-    square[i].removeEventListener('click', getEndNumber);
-    square[i].classList.remove('squaresEnabled');
+    square[i].addEventListener('click', callBack);
+}
+}
+
+const removeSquareListeners=(callBack)=>{
+  const square = document.getElementsByClassName('cell');
+  for (let i = 0; i < square.length; i++) {
+    square[i].removeEventListener('click', callBack);
   }
+}
+
+const showSelectedSquare=(number)=>{
+  const squarePicked = document.getElementById(number);
+  squarePicked.style.backgroundColor = ('tomato');
+  squarePicked.innerText = (number);
+}
+
+const pushToLS=(num)=>{
+  const listFromLS = JSON.parse(window.localStorage.getItem('knightStart'));
+  listFromLS.push(num);
+  localStorage.setItem('knightStart', JSON.stringify(listFromLS));
+}
+
+// SQUARE CLICKED, GET END NUMBER
+function getEndNumber(e) {
+  const endNumber = e.target.id;
+  pushToLS(endNumber)
+  showSelectedSquare(endNumber)
+  removeSquareListeners(getEndNumber)
   // SWITCH PROGRAM FLOW TO BFS MODULE FOR BREADTH FIRST SEARCH
   getLSDataForBFS();
 }
 
 function enableSquaresForEnd() {
-// display
+  // display
   document.getElementById('display').innerHTML = 'Click on any square to set the end';
   // remove select btn listener
   const btnSelect = document.getElementById('btnSelect');
-  btnSelect.removeEventListener('click', enableSquaresForEnd);
   btnSelect.classList.add('disabled');
-  // add square listeners
-  const square = document.getElementsByClassName('cell');
-  for (let i = 0; i < square.length; i++) {
-    square[i].addEventListener('click', getEndNumber);
-  }
+  btnSelect.removeEventListener('click', enableSquaresForEnd);
+  addSquaresListeners(getEndNumber)
 }
 
 function getStartNumber(e) {
-  // send start number to LS
   const startNumber = e.target.id;
-  const listFromLS = [];
-  listFromLS.push(startNumber);
-  localStorage.setItem('knightStart', JSON.stringify(listFromLS));
+  pushToLS(startNumber)
   // update display
   document.getElementById('display').innerHTML = 'Click SELECT button then pick End Square';
-  // color the square selected
-  const squarePicked = document.getElementById(startNumber);
-  squarePicked.style.backgroundColor = ('tomato');
-  squarePicked.innerText = (`start: ${startNumber}`);
-  // remove squares listeners
-  const square = document.getElementsByClassName('cell');
-  for (let i = 0; i < square.length; i++) {
-    square[i].removeEventListener('click', getStartNumber);
-  }
+  showSelectedSquare(startNumber)
+  removeSquareListeners(getStartNumber)
   // enable SELECT btn
   const btnSelect = document.getElementById('btnSelect');
   btnSelect.classList.remove('disabled');
@@ -63,25 +64,18 @@ function getStartNumber(e) {
 }
 
 function startBtnClicked() {
-  // Clear board of previous displayed items & disable Select button
-  const btnSelect = document.getElementById('btnSelect');
-  btnSelect.classList.add('disabled');
+  // set a blank array in Local storage
+  localStorage.setItem('knightStart', [JSON.stringify([])]);
+  // Clear board of previous displayed items
   document.getElementById('container').innerHTML = '';
   makeChessBoard();
   document.getElementById('display').innerHTML = 'Click on any square to start';
-  // add click listeners to squares on board
-  const square = document.getElementsByClassName('cell');
-  for (let i = 0; i < square.length; i++) {
-    square[i].classList.add('squaresEnabled');
-    square[i].addEventListener('click', getStartNumber);
-  }
+  addSquaresListeners(getStartNumber)
 }
 
 const begin = () => {
-  // START BTN: remove disabled class & add click listener
   const btnStart = document.getElementById('btnStart');
   btnStart.classList.remove('disabled');
   btnStart.addEventListener('click', startBtnClicked);
-  // - wait for Start btn click
 };
 export default begin;
